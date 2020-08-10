@@ -27,7 +27,7 @@ startDate='2019-08-07', endDate='2020-08-07', frequency='annually')
 google = client.get_ticker_price("GOOGL", fmt='json', 
 startDate='2019-08-07', endDate='2020-08-07', frequency='annually')
 
-for row in historical_prices:
+for row in apple:
     print(row['date'], row['close'])
 
 #historical_prices.to_html('index.html')
