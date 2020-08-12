@@ -2,6 +2,9 @@ from tiingo import TiingoClient
 import numpy as np
 import pandas as pd
 from io import StringIO
+
+allTickers = pd.read_csv("supported_tickers.csv", header=0)
+print(allTickers)
 # Set TIINGO_API_KEY in your environment variables in your .bash_profile, OR
 # pass a dictionary with 'api_key' as a key into the TiingoClient.
 
