@@ -5,15 +5,14 @@ from io import StringIO
 
 allTickers = pd.read_csv('supported_tickers.csv')
 
-print(allTickers)
-
 #print(allTickers)
 #allTickers = pd.concat(csv, ignore_index=True)
 listOfTickers = []
+
 for row in allTickers.iterrows():
     #print(row)
-    if not np.isnan(row == "startDate"):
-         if  not np.isnan(row == "endDate"):
+    if not np.isnan(row == "startDate"): #if the start date is not empty
+         if  not np.isnan(row == "endDate"): # if the end date is not empty
              listOfTickers.append(row[1][0])
 #print(listOfTickers)
 
@@ -50,17 +49,17 @@ for ticker in listOfTickers:
    # print(jsonData)
     #here is where u take the difference. each 1st row is the startDate infp and 2nd is the endDate info
     lastYearPrice = 0.0
-    thisYearPRice = 0.0
+    thisYearPrice = 0.0
     i =0
     for row in jsonData:
         #print("STOCK: ", ticker,  row['close'])
         if i == 0:
             lastYearPrice = row['close']
         
-        thisYearPRice = row['close']
+        thisYearPrice = row['close']
         i += 1
-     #% return formula here
-    percentReturn = (thisYearPRice / lastYearPrice) * 100
+     # % return formula here
+    percentReturn = (thisYearPrice / lastYearPrice) * 100
   
     singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} )
     frame.append(singleStockDataFrame)
@@ -71,7 +70,7 @@ YTD_df = pd.concat(frame)
 YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False)
 # turn data frame to html text
 YTD_df.to_html('index.html')
-print(YTD_df)
+#print(YTD_df)
 
 
 #ticker_history = client.get_dataframe(eight_stocks,
