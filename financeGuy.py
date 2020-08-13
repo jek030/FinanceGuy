@@ -3,7 +3,9 @@ import numpy as np
 import pandas as pd
 from io import StringIO
 
-allTickers = pd.read_csv("supported_tickers.csv")
+allTickers = pd.read_csv('supported_tickers.csv')
+
+print(allTickers)
 
 #print(allTickers)
 #allTickers = pd.concat(csv, ignore_index=True)
@@ -77,4 +79,3 @@ print(YTD_df)
 ##                                      metric_name='close',
 #                                      startDate='2019-08-07',
 #                                      endDate='2020-08-07')
-
