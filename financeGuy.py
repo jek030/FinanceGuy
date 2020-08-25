@@ -70,7 +70,7 @@ YTD_df = pd.concat(frame)
 
 YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False)
 # turn data frame to html text
-YTD_df.to_html('index.html')
+YTD_df.to_html('table.html')
 #print(YTD_df)
 
 
