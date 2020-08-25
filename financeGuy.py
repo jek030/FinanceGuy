@@ -17,7 +17,7 @@ for row in allTickers.iterrows():
              listOfTickers.append(row[1][0])
 #print(listOfTickers)
 
-listOfTickers = listOfTickers[:400]
+listOfTickers = listOfTickers[:300]
 print(listOfTickers)
 
 # Set TIINGO_API_KEY in your environment variables in your .bash_profile, OR
