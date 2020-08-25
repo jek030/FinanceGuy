@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from io import StringIO
 
-allTickers = pd.read_csv('supported_tickers.csv')
+allTickers = pd.read_csv('nasdaqCSV.csv')
 
 #print(allTickers)
 #allTickers = pd.concat(csv, ignore_index=True)
@@ -16,7 +16,7 @@ for row in allTickers.iterrows():
              listOfTickers.append(row[1][0])
 #print(listOfTickers)
 
-listOfTickers = listOfTickers[:300]
+listOfTickers = listOfTickers:300]
 print(listOfTickers)
 
 # Set TIINGO_API_KEY in your environment variables in your .bash_profile, OR
@@ -44,6 +44,7 @@ eight_stocks = ["AAPL","GOOGL","MSFT", "AMD", "PYPL","SQ", "TSLA","TMXLF"]
 frame = []
 
 for ticker in listOfTickers:
+    print(ticker)
     jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2019-08-07',  frequency='daily')
    # print("***************")
    # print(jsonData)
