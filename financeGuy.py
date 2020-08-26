@@ -3,21 +3,22 @@ import numpy as np
 import pandas as pd
 from io import StringIO
 
-allTickers = pd.read_csv('nasdaqCSV.csv')
-
+#allTickers = pd.read_csv('nasdaqCSV.csv')
+#top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
+top99 = ['AAPL', 'MSFT', 'AMZN']
 #print(allTickers)
 #allTickers = pd.concat(csv, ignore_index=True)
-listOfTickers = []
+#listOfTickers = []
 
-for row in allTickers.iterrows():
+#for row in allTickers.iterrows():
     #print(row)
-    if not np.isnan(row == "startDate"): #if the start date is not empty
-         if  not np.isnan(row == "endDate"): # if the end date is not empty
-             listOfTickers.append(row[1][0])
+   # if not np.isnan(row == "startDate"): #if the start date is not empty
+  #       if  not np.isnan(row == "endDate"): # if the end date is not empty
+ #            listOfTickers.append(row[1][0])
 #print(listOfTickers)
 
-listOfTickers = listOfTickers:300]
-print(listOfTickers)
+#listOfTickers = listOfTickers:300]
+#print(listOfTickers)
 
 # Set TIINGO_API_KEY in your environment variables in your .bash_profile, OR
 # pass a dictionary with 'api_key' as a key into the TiingoClient.
@@ -39,15 +40,16 @@ client = TiingoClient(config)
 ########################################################
 ########################################################
 
-eight_stocks = ["AAPL","GOOGL","MSFT", "AMD", "PYPL","SQ", "TSLA","TMXLF"]
+#eight_stocks = ["AAPL","GOOGL","MSFT", "AMD", "PYPL","SQ", "TSLA","TMXLF"]
 
 frame = []
 
-for ticker in listOfTickers:
+for ticker in top99:
+    print("***************")
     print(ticker)
-    jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2019-08-07',  frequency='daily')
-   # print("***************")
-   # print(jsonData)
+    jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2019-08-26',  frequency='daily')
+    
+    #print(jsonData)
     #here is where u take the difference. each 1st row is the startDate infp and 2nd is the endDate info
     lastYearPrice = 0.0
     thisYearPrice = 0.0
@@ -64,7 +66,7 @@ for ticker in listOfTickers:
   
     singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} )
     frame.append(singleStockDataFrame)
-    #print()  
+   # print()  
 
 YTD_df = pd.concat(frame)
 
