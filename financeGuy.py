@@ -27,7 +27,7 @@ def main():
 
 def getTickers():
     #top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
-    top99 = ['AAPL', 'MSFT',   'PYPL', 'AMZN']
+    top99 = ['AAPL', 'MSFT', 'PYPL', 'AMZN', 'GOOGL']
     return top99
     #allTickers = pd.read_csv('nasdaqCSV.csv')
 
@@ -51,8 +51,9 @@ def createDF(top99, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
 
     for ticker in top99:
-        jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2019-08-26',  frequency='daily') # gets data fromAPI in JSON format
-
+        jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2020-08-22',  frequency='daily') # gets data fromAPI in JSON format
+        print(jsonData)
+        print()
         #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
         lastYearPrice = 0.0
         thisYearPrice = 0.0
@@ -74,7 +75,7 @@ def createDF(top99, client):
     print(YTD_df)
     # turn data frame to html text
     YTD_df.to_html('table.html')
-    
+
 
 
 if __name__ == "__main__":
