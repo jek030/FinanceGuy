@@ -2,6 +2,7 @@ from tiingo import TiingoClient
 from io import StringIO
 import numpy as np
 import pandas as pd
+from datetime import date
 
 
 
@@ -16,7 +17,8 @@ def main():
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "a17ef094e195b4a09409f0fb1753880fc420154a"
+    config['api_key'] = "028f16053ce2180643cb2443b4b24736967452c1"
+
 
     # Initialize
     client = TiingoClient(config)
@@ -26,8 +28,8 @@ def main():
 
 
 def getTickers():
-    #top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
-    top99 = ['AAPL', 'MSFT',   'PYPL', 'AMZN']
+    top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
+    #top99 = ['AAPL', 'MSFT',   'PYPL', 'AMZN']
     return top99
     #allTickers = pd.read_csv('nasdaqCSV.csv')
 
@@ -49,9 +51,13 @@ def getTickers():
 
 def createDF(top99, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
+    today = date.today()
+    thisYear = today.strftime("%Y")
+    lastYear = int(thisYear) - 1
+    lastYear = str(lastYear)
 
     for ticker in top99:
-        jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2019-08-26',  frequency='daily') # gets data fromAPI in JSON format
+        jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
 
         #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
         lastYearPrice = 0.0
