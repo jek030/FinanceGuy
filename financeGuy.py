@@ -24,17 +24,12 @@ def main():
     client = TiingoClient(config)
     # --START OF OUR CODE--
     top99 = getTickers()
-    createDF(top99, client)
-
+    create5YearDF(top99, client)
+    create10YearDF(top99, client)
 
 def getTickers():
-<<<<<<< HEAD
     top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
-    #top99 = ['AAPL', 'MSFT',   'PYPL', 'AMZN']
-=======
-    #top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
-    top99 = ['AAPL', 'MSFT', 'PYPL', 'AMZN', 'GOOGL']
->>>>>>> 54662e5440eaf1f938f588272d53aa24fd6fb81b
+    #top99 = ['AAPL', 'MSFT', 'PYPL', 'AMZN', 'GOOGL']
     return top99
     #allTickers = pd.read_csv('nasdaqCSV.csv')
 
@@ -54,7 +49,7 @@ def getTickers():
 
 
 
-def createDF(top99, client):
+def createLastYearDF(top99, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
     today = date.today()
     thisYear = today.strftime("%Y")
@@ -62,14 +57,8 @@ def createDF(top99, client):
     lastYear = str(lastYear)
 
     for ticker in top99:
-<<<<<<< HEAD
         jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
 
-=======
-        jsonData = client.get_ticker_price(ticker, fmt='json', startDate='2020-08-22',  frequency='daily') # gets data fromAPI in JSON format
-        print(jsonData)
-        print()
->>>>>>> 54662e5440eaf1f938f588272d53aa24fd6fb81b
         #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
         lastYearPrice = 0.0
         thisYearPrice = 0.0
@@ -92,6 +81,69 @@ def createDF(top99, client):
     # turn data frame to html text
     YTD_df.to_html('table.html')
 
+def create5YearDF(top99, client):
+    listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
+    today = date.today()
+    thisYear = today.strftime("%Y")
+    lastYear = int(thisYear) - 5
+    lastYear = str(lastYear)
+
+    for ticker in top99:
+        jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
+
+        #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
+        lastYearPrice = 0.0
+        thisYearPrice = 0.0
+        i =0
+        for row in jsonData:
+            #print("STOCK: ", ticker,  row['close'])
+            if i == 0:
+                lastYearPrice = row['close']
+            
+            thisYearPrice = row['close'] #keep iterating until most recent price
+            i += 1
+        percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
+    
+        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
+        listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
+    
+    YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
+    YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False) #order the DF by highest PR
+    print(YTD_df)
+    # turn data frame to html text
+    YTD_df.to_html('table5.html')   
+
+def create10YearDF(top99, client):
+    listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
+    today = date.today()
+    thisYear = today.strftime("%Y")
+    lastYear = int(thisYear) - 10
+    lastYear = str(lastYear)
+
+    for ticker in top99:
+        jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
+
+        #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
+        lastYearPrice = 0.0
+        thisYearPrice = 0.0
+        i =0
+        for row in jsonData:
+            #print("STOCK: ", ticker,  row['close'])
+            if i == 0:
+                lastYearPrice = row['close']
+            
+            thisYearPrice = row['close'] #keep iterating until most recent price
+            i += 1
+        percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
+    
+        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
+        listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
+    
+    YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
+    YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False) #order the DF by highest PR
+    print(YTD_df)
+    # turn data frame to html text
+    YTD_df.to_html('table10.html')
 
 
 if __name__ == "__main__":
