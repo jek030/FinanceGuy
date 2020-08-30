@@ -86,7 +86,7 @@ def createLastYearDF(top99, client):
     #new stuff
     pd.set_option('colheader_justify', 'center')   # FOR TABLE <th> what does this do
     html_string = '''
-    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+    <link rel="stylesheet" type="text/css" href="df_style.css"/>
     <html>
     <head><title>Top S&P Performers</title>
     <h1> Top S&P Performers </h1>
