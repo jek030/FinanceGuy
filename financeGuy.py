@@ -34,21 +34,7 @@ def getTickers():
     top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
     #top99 = ['AAPL', 'MSFT', 'PYPL', 'AMZN', 'GOOGL']
     return top99
-    #allTickers = pd.read_csv('nasdaqCSV.csv')
-
-    #print(allTickers)
-    #allTickers = pd.concat(csv, ignore_index=True)
-    #listOfTickers = []
-
-    #for row in allTickers.iterrows():
-        #print(row)
-    # if not np.isnan(row == "startDate"): #if the start date is not empty
-    #       if  not np.isnan(row == "endDate"): # if the end date is not empty
-    #            listOfTickers.append(row[1][0])
-    #print(listOfTickers)
-
-    #listOfTickers = listOfTickers:300]
-    #print(listOfTickers)
+    
 
 
 #1
@@ -80,7 +66,7 @@ def createLastYearDF(top99, client):
     
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
     YTD_df = YTD_df.sort_values(by= ['1 Year % Return'], ignore_index=True, ascending=False) #order the DF by highest PR
-    print(YTD_df)
+   
     # turn data frame to html text
 
     #new stuff
@@ -100,15 +86,17 @@ def createLastYearDF(top99, client):
 
    
     '''
-    
-    #def make_clickable(val):
-     #   for ticker in YTD_df['Ticker']:
-         #   return '<a href=https://finance.yahoo.com/quote/" + str(ticker)>{}</a>'.format(val,val)
-    
-    #YTD_df.style.format(make_clickable)
 
+    YTD_df.style.format( make_clickable)
+    YTD_df.index = YTD_df.index +1
+    print(YTD_df)
     with open('table.html', 'w') as f:
-        f.write(html_string.format(table=YTD_df.to_html(classes='mystyle')))
+        f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
+
+
+def make_clickable(val):
+            return '<a target="_blank" href="https://www.tiingo.com/tsla/overview">{}</a>'.format(val,val)
+
 
 
 #2
