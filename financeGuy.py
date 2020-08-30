@@ -17,15 +17,18 @@ def main():
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "028f16053ce2180643cb2443b4b24736967452c1"
+    config['api_key'] = "a17ef094e195b4a09409f0fb1753880fc420154a"
+    #config['api_key'] = "028f16053ce2180643cb2443b4b24736967452c1"
+
 
 
     # Initialize
     client = TiingoClient(config)
     # --START OF OUR CODE--
     top99 = getTickers()
-    create5YearDF(top99, client)
-    create10YearDF(top99, client)
+    createLastYearDF(top99, client)
+    #create5YearDF(top99, client)
+    #create10YearDF(top99, client)
 
 def getTickers():
     top99 =['AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'JNJ', 'V', 'PG', 'NVDA', 'HD', 'MA', 'JPM', 'UNH', 'VZ', 'PYPL', 'DIS', 'ADBE', 'MRK', 'NFLX', 'PFE', 'T', 'INTC', 'BAC', 'CMCSA', 'CRM', 'PEP', 'KO', 'WMT', 'ABT', 'CSCO', 'XOM', 'TMO', 'ABBV', 'CVX', 'MCD', 'COST', 'ACN', 'AMGN', 'BMY', 'NKE', 'NEE', 'MDT', 'AVGO', 'UNP', 'LIN', 'DHR', 'QCOM', 'TXN', 'LLY', 'LOW', 'PM', 'ORCL', 'HON', 'UPS', 'IBM', 'AMT', 'C', 'AMD', 'LMT', 'SBUX', 'MMM', 'BA', 'CHTR', 'WFC', 'BLK', 'FIS', 'RTX', 'INTU', 'NOW', 'SPGI', 'GILD', 'CVS', 'MDLZ', 'ISRG', 'MO', 'TGT', 'CAT', 'BKNG', 'ZTS', 'BDX', 'PLD', 'VRTX', 'ANTM', 'EQIX', 'TMUS', 'CCI', 'CL', 'D', 'CI', 'AXP', 'ATVI', 'DE', 'GS', 'TJX', 'APD', 'CME', 'MS', 'REGN']
@@ -48,7 +51,7 @@ def getTickers():
     #print(listOfTickers)
 
 
-
+#1
 def createLastYearDF(top99, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
     today = date.today()
@@ -79,8 +82,23 @@ def createLastYearDF(top99, client):
     YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False) #order the DF by highest PR
     print(YTD_df)
     # turn data frame to html text
-    YTD_df.to_html('table.html')
 
+    #new stuff
+    pd.set_option('colheader_justify', 'center')   # FOR TABLE <th>
+    html_string = '''
+    <html>
+    <head><title>HTML Pandas Dataframe with CSS</title></head>
+    <link rel="stylesheet" type="text/css" href="df_style.css"/>
+    <body>
+        {table}
+    </body>
+    </html>.
+    '''
+    with open('table.html', 'w') as f:
+        f.write(html_string.format(table=YTD_df.to_html(classes='mystyle')))
+
+
+#2
 def create5YearDF(top99, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
     today = date.today()
@@ -113,6 +131,7 @@ def create5YearDF(top99, client):
     # turn data frame to html text
     YTD_df.to_html('table5.html')   
 
+#3
 def create10YearDF(top99, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
     today = date.today()
@@ -141,6 +160,7 @@ def create10YearDF(top99, client):
     
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
     YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False) #order the DF by highest PR
+    
     print(YTD_df)
     # turn data frame to html text
     YTD_df.to_html('table10.html')
