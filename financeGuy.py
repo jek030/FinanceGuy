@@ -17,8 +17,8 @@ def main():
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "a17ef094e195b4a09409f0fb1753880fc420154a"
-    #config['api_key'] = "028f16053ce2180643cb2443b4b24736967452c1"
+    #config['api_key'] = "a17ef094e195b4a09409f0fb1753880fc420154a"
+    config['api_key'] = "028f16053ce2180643cb2443b4b24736967452c1"
 
 
 
@@ -75,7 +75,7 @@ def createLastYearDF(top99, client):
             i += 1
         percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
     
-        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
+        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '1 Year % Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
         listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
     
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
@@ -87,13 +87,23 @@ def createLastYearDF(top99, client):
     pd.set_option('colheader_justify', 'center')   # FOR TABLE <th>
     html_string = '''
     <html>
-    <head><title>HTML Pandas Dataframe with CSS</title></head>
+    <head><title>Top S&P Performers</title>
+    <h1> Top S&P Performers </h1>
+    </head>
     <link rel="stylesheet" type="text/css" href="df_style.css"/>
     <body>
         {table}
+    <p> Percent return based on stock closing price. </p>
     </body>
-    </html>.
+    </html>
     '''
+    
+    #def make_clickable(val):
+     #   for ticker in YTD_df['Ticker']:
+         #   return '<a href=https://finance.yahoo.com/quote/" + str(ticker)>{}</a>'.format(val,val)
+    
+    #YTD_df.style.format(make_clickable)
+
     with open('table.html', 'w') as f:
         f.write(html_string.format(table=YTD_df.to_html(classes='mystyle')))
 
@@ -122,7 +132,7 @@ def create5YearDF(top99, client):
             i += 1
         percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
     
-        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
+        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '5 Year Return (%)': [percentReturn]} ) #create a DF of each stock with its ticker and PR
         listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
     
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
@@ -155,7 +165,7 @@ def create10YearDF(top99, client):
             i += 1
         percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
     
-        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '% Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
+        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '10 Year Return (%)': [percentReturn]} ) #create a DF of each stock with its ticker and PR
         listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
     
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
