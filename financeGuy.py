@@ -79,23 +79,26 @@ def createLastYearDF(top99, client):
         listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
     
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
-    YTD_df = YTD_df.sort_values(by= ['% Return'], ignore_index=True, ascending=False) #order the DF by highest PR
+    YTD_df = YTD_df.sort_values(by= ['1 Year % Return'], ignore_index=True, ascending=False) #order the DF by highest PR
     print(YTD_df)
     # turn data frame to html text
 
     #new stuff
-    pd.set_option('colheader_justify', 'center')   # FOR TABLE <th>
+    pd.set_option('colheader_justify', 'center')   # FOR TABLE <th> what does this do
     html_string = '''
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
     <html>
     <head><title>Top S&P Performers</title>
     <h1> Top S&P Performers </h1>
     </head>
-    <link rel="stylesheet" type="text/css" href="df_style.css"/>
+    
     <body>
         {table}
     <p> Percent return based on stock closing price. </p>
     </body>
     </html>
+
+   
     '''
     
     #def make_clickable(val):
