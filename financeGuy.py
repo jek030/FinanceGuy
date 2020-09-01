@@ -3,6 +3,7 @@ from io import StringIO
 import numpy as np
 import pandas as pd
 from datetime import date
+import pickle
 
 
 
@@ -83,19 +84,20 @@ def createLastYearDF(top99, client):
     <p> Percent return based on stock closing price. </p>
     </body>
     </html>
-
-   
     '''
 
-    YTD_df.style.format( make_clickable)
-    YTD_df.index = YTD_df.index +1
+    #YTD_df.style.format( make_clickable)
+    YTD_df.index = YTD_df.index +1 
+
     print(YTD_df)
-    with open('table.html', 'w') as f:
-        f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
+    YTD_df.to_csv('YTD.csv')
+
+    #with open('table.html', 'w') as f:
+        #f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
 
 
-def make_clickable(val):
-            return '<a target="_blank" href="https://www.tiingo.com/tsla/overview">{}</a>'.format(val,val)
+#def make_clickable(val):
+            #return '<a target="_blank" href="https://www.tiingo.com/tsla/overview">{}</a>'.format(val,val)
 
 
 
