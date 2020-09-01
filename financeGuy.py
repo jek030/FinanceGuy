@@ -45,29 +45,37 @@ def createLastYearDF(top99, client):
     thisYear = today.strftime("%Y")
     lastYear = int(thisYear) - 1
     lastYear = str(lastYear)
+    #this is where we get data from JSON - comment out
+    ##########
+    # for ticker in top99:
+    #     jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
 
-    for ticker in top99:
-        jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
-
-        #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
-        lastYearPrice = 0.0
-        thisYearPrice = 0.0
-        i =0
-        for row in jsonData:
-            #print("STOCK: ", ticker,  row['close'])
-            if i == 0:
-                lastYearPrice = row['close']
+    #     #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
+    #     lastYearPrice = 0.0
+    #     thisYearPrice = 0.0
+    #     i =0
+    #     for row in jsonData:
+    #         #print("STOCK: ", ticker,  row['close'])
+    #         if i == 0:
+    #             lastYearPrice = row['close']
             
-            thisYearPrice = row['close'] #keep iterating until most recent price
-            i += 1
-        percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
+    #         thisYearPrice = row['close'] #keep iterating until most recent price
+    #         i += 1
+    #     percentReturn = (thisYearPrice / lastYearPrice) * 100 # percent return formula here
     
-        singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '1 Year % Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
-        listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
+    #     singleStockDataFrame = pd.DataFrame({'Ticker': [ticker], '1 Year % Return': [percentReturn]} ) #create a DF of each stock with its ticker and PR
+    #     listOfDFs.append(singleStockDataFrame) #append each DF to the list of DFs
     
-    YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
-    YTD_df = YTD_df.sort_values(by= ['1 Year % Return'], ignore_index=True, ascending=False) #order the DF by highest PR
-   
+    # YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
+    # YTD_df = YTD_df.sort_values(by= ['1 Year % Return'], ignore_index=True, ascending=False) #order the DF by highest PR
+
+    #YTD_df.style.format( make_clickable)
+    #YTD_df.index = YTD_df.index +1 
+
+    #
+    # print(YTD_df)
+    #YTD_df.to_csv('YTD.csv')
+   ########
     # turn data frame to html text
 
     #new stuff
@@ -86,14 +94,12 @@ def createLastYearDF(top99, client):
     </html>
     '''
 
-    #YTD_df.style.format( make_clickable)
-    YTD_df.index = YTD_df.index +1 
-
+    YTD_df = pd.read_csv('YTD.csv', index_col = False)
+    YTD_df.drop(YTD_df.columns[0], axis=1, inplace=True) #drops the 2nd column, axis=1 means columns, 0 would be row. inplace means we dont have to reassign the var. 
+                                                        #When we read the csv it makes a new col for some reason so we have duplicate indexes
     print(YTD_df)
-    YTD_df.to_csv('YTD.csv')
-
-    #with open('table.html', 'w') as f:
-        #f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
+    with open('table.html', 'w') as f:
+        f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
 
 
 #def make_clickable(val):
