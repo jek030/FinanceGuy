@@ -97,6 +97,7 @@ def createLastYearDF(top99, client):
     YTD_df = pd.read_csv('YTD.csv', index_col = False)
     YTD_df.drop(YTD_df.columns[0], axis=1, inplace=True) #drops the 2nd column, axis=1 means columns, 0 would be row. inplace means we dont have to reassign the var. 
                                                         #When we read the csv it makes a new col for some reason so we have duplicate indexes
+    YTD_df.index = YTD_df.index +1
     print(YTD_df)
     with open('table.html', 'w') as f:
         f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
