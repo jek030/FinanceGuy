@@ -3,7 +3,6 @@ from io import StringIO
 import numpy as np
 import pandas as pd
 from datetime import date
-import pickle
 
 
 
@@ -73,8 +72,8 @@ def createLastYearDF(top99, client):
     #YTD_df.index = YTD_df.index +1 
 
     #
-    # print(YTD_df)
-    #YTD_df.to_csv('YTD.csv')
+   
+    
    ########
     # turn data frame to html text
 
@@ -86,7 +85,6 @@ def createLastYearDF(top99, client):
     <head><title>Top S&P Performers</title>
     <h1> Top S&P Performers </h1>
     </head>
-    
     <body>
         {table}
     <p> Percent return based on stock closing price. </p>
@@ -98,6 +96,9 @@ def createLastYearDF(top99, client):
     YTD_df.drop(YTD_df.columns[0], axis=1, inplace=True) #drops the 2nd column, axis=1 means columns, 0 would be row. inplace means we dont have to reassign the var. 
                                                         #When we read the csv it makes a new col for some reason so we have duplicate indexes
     YTD_df.index = YTD_df.index +1
+
+
+    #YTD_df.to_csv('YTD.csv')
     print(YTD_df)
     with open('table.html', 'w') as f:
         f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
