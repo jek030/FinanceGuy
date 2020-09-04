@@ -26,7 +26,7 @@ def main():
     client = TiingoClient(config)
     # --START OF OUR CODE--
     top100 = getTickers()
-    #createLastYearDF(top100, client)
+    createLastYearDF(top100, client)
     #create5YearDF(top100, client)
     #create10YearDF(top100, client)
 
@@ -107,8 +107,11 @@ def createLastYearDF(top100, client):
 
     #YTD_df.to_csv('YTD.csv')
     print(YTD_df)
-    with open('table.html', 'w') as f:
-        f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
+    # line below adds hyperlink for each ticker, need the escape = false so the html doesn't override
+    YTD_df['Ticker']=YTD_df['Ticker'].apply(lambda x: '<a href ="https://finance.yahoo.com/quote/{}">{}</a>'.format(x,x,x))
+    YTD_df.to_html('table.html', escape = False)
+    #with open('table.html', 'w') as f:
+        #f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
 
 
 #def make_clickable(val):
@@ -117,14 +120,14 @@ def createLastYearDF(top100, client):
 
 
 #2
-def create5YearDF(SP500, client):
+def create5YearDF(top100, client):
     listOfDFs = [] #a list to temporarily hold each stocks DF so we can combine them
     today = date.today()
     thisYear = today.strftime("%Y")
     lastYear = int(thisYear) - 5
     lastYear = str(lastYear)
 
-    for ticker in SP500:
+    for ticker in top100:
         jsonData = client.get_ticker_price(ticker, fmt='json', startDate= lastYear+today.strftime('-%m-%d'),  frequency='daily') # gets data fromAPI in JSON format
 
         #here is where u take the difference. each 1st row is the startDate infp0and 2nd is the endDate info
@@ -146,7 +149,10 @@ def create5YearDF(SP500, client):
     YTD_df = pd.concat(listOfDFs) #Turn list of data frames into one data frame
     YTD_df = YTD_df.sort_values(by= ['5 Year Return (%)'], ignore_index=True, ascending=False) #order the DF by highest PR
     YTD_df.index = YTD_df.index +1
+
     print(YTD_df)
+    
+    
     # turn data frame to html text
     YTD_df.to_html('table5.html')   
 
