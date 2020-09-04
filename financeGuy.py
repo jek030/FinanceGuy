@@ -89,12 +89,15 @@ def createLastYearDF(top100, client):
     html_string = '''
     <link rel="stylesheet" type="text/css" href="df_style.css"/>
     <html>
-    <head><title>Top S&P Performers</title>
+    <head>
+    <title>Top S&P Performers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <h1> Top S&P Performers </h1>
     </head>
     <body>
         {table}
-    <p> Percent return based on stock closing price. </p>
+    <p> Percent return is based solely on stock closing price. </p>
+    <p> Co-developers: Peter Andresen & James Jelly </p>
     </body>
     </html>
     '''
@@ -108,10 +111,10 @@ def createLastYearDF(top100, client):
     #YTD_df.to_csv('YTD.csv')
     print(YTD_df)
     # line below adds hyperlink for each ticker, need the escape = false so the html doesn't override
-    YTD_df['Ticker']=YTD_df['Ticker'].apply(lambda x: '<a href ="https://finance.yahoo.com/quote/{}">{}</a>'.format(x,x,x))
-    YTD_df.to_html('table.html', escape = False)
-    #with open('table.html', 'w') as f:
-        #f.write(html_string.format(table = YTD_df.to_html(classes='mystyle')))
+    YTD_df['Ticker']=YTD_df['Ticker'].apply(lambda x: '<a target="_blank" href ="https://finance.yahoo.com/quote/{}">{}</a>'.format(x,x,x))
+    #YTD_df.to_html('table.html', escape = False, classes = 'mystyle')
+    with open('table.html', 'w') as f:
+        f.write(html_string.format(table = YTD_df.to_html(escape = False, classes='mystyle')))
 
 
 #def make_clickable(val):

@@ -1,8 +1,18 @@
 /* includes alternating gray and white with on-hover color */
 
+
+h1{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 40;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-bottom: 3px solid red;
+    padding: 15px;
+}
 .mystyle {
-    font-size: 11pt; 
-    font-family: Arial;
+    font-size: 12pt; 
+    font-family: 'Open Sans', sans-serif;;
     border-collapse: collapse; 
     border: 1px solid silver;
     width: 100%;
@@ -21,3 +31,4 @@
     background: silver;
     cursor: pointer;
 }
+
